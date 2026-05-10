@@ -2,22 +2,26 @@ name: 5EPlay Monitor
 
 on:
   schedule:
-    # 定时任务：每天北京时间 10:30 和 20:30 (对应 UTC 2:30 和 12:30)
+    # 每天北京时间 10:30 和 20:30
     - cron: '30 2 * * *'
     - cron: '30 12 * * *'
-  workflow_dispatch: # 允许手动点击运行，方便测试
+  workflow_dispatch: # 允许手动点击运行
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 这一行可以消除关于 Node.js 24 的警告
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
     steps:
       - name: 检出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # 升级到 v4
 
       - name: 安装 Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # 升级到 v5
         with:
-          python-version: '3.9'
+          python-version: '3.11' # 使用更稳定的 Python 3.11
 
       - name: 安装依赖
         run: pip install requests beautifulsoup4
@@ -28,38 +32,3 @@ jobs:
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
           MAIL_RECEIVER: ${{ secrets.MAIL_RECEIVER }}
         run: python monitor.py
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          echo test, and deploy your project.
