@@ -1,0 +1,65 @@
+name: 5EPlay Monitor
+
+on:
+  schedule:
+    # 定时任务：每天北京时间 10:30 和 20:30 (对应 UTC 2:30 和 12:30)
+    - cron: '30 2 * * *'
+    - cron: '30 12 * * *'
+  workflow_dispatch: # 允许手动点击运行，方便测试
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 安装 Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 安装依赖
+        run: pip install requests beautifulsoup4
+
+      - name: 运行脚本
+        env:
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASS: ${{ secrets.MAIL_PASS }}
+          MAIL_RECEIVER: ${{ secrets.MAIL_RECEIVER }}
+        run: python monitor.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          echo test, and deploy your project.
